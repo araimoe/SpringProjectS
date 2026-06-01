@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/error.css}" >
+</head>
+<body>
+	<div style="text-align:center;">
+		<h2>会員情報一覧</h2><br>
+		
+		<form th:action="@{/selectMember}" th:Object="${MemberDTO}" method="post">
+			<p>詳細検索</p>
+			名前：<input type="text" neme="name" th:field="*{name}">
+			性別：<input type="text" neme="gender" th:field="*{gender}">
+			住所：<input type="text" neme="address" th:field="*{address}">
+		
+			<input type="submit" value="検索">
+		</form>	
+		
+		<p th:text="${deleteSuccess}"></p>
+		<p class="error" th:text ="${deleteError}"></p>
+		
+		
+	<table border="1">
+		<tr>
+			<th>氏名</th>
+			<th>氏名（フリガナ）</th>
+			<th>	性別</th>	
+			<th>誕生日</th>
+			<th>Eメール</th>
+			<th>	パスワード</th>
+			<th>電話番号</th>
+			<th>郵便番号</th>
+			<th>住所</th>
+		</tr>
+		
+		<tr th:each = "list : ${memberlist}">
+			
+			<td th:text = "${list.name}"></td>
+			<td th:text = "${list.kana}"></td>
+			<td th:text = "${list.gender}"></td>
+			<td th:text = "${list.birthday}"></td>
+			<td th:text = "${list.email}"></td>
+			<td th:text = "${list.password}"></td>
+			<td th:text = "${list.phoneNumber}"></td>
+			<td th:text = "${list.postalCode}"></td>
+			<td th:text = "${list.address}"></td>
+			
+			<form th:action="@{/update}" method="post">
+				<td>
+					<input type="hidden" name = "userId" th:value="${list.userId}">
+					<input type="submit" value="更新"></td>
+			</form>		
+			
+			<form th:action="@{/delete}" method="post">
+				<td>
+					<input type="hidden" name = "userId" th:value="${list.userId}">
+					<input type="submit" value="削除"></td>
+			</form>
+			
+			
+			
+		</tr>
+		<tr th:each = "serchList : ${memberList}">
+					
+					<td th:text = "${serchList.name}"></td>
+					<td th:text = "${serchList.kana}"></td>
+					<td th:text = "${serchList.gender}"></td>
+					<td th:text = "${serchList.birthday}"></td>
+					<td th:text = "${serchList.email}"></td>
+					<td th:text = "${serchList.password}"></td>
+					<td th:text = "${serchList.phoneNumber}"></td>
+					<td th:text = "${serchList.postalCode}"></td>
+					<td th:text = "${serchList.address}"></td>
+					
+					<form th:action="@{/update}" method="post">
+						<td>
+							<input type="hidden" name = "userId" th:value="${serchList.userId}">
+							<input type="submit" value="更新"></td>
+					</form>		
+					
+					<form th:action="@{/delete}" method="post">
+						<td>
+							<input type="hidden" name = "userId" th:value="${serchList.userId}">
+							<input type="submit" value="削除"></td>
+					</form>
+					
+					
+					
+				</tr>
+	</table>
+	</div>
+</body>
+</html>

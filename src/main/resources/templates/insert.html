@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/error.css}" >
+</head>
+<body>
+<!--	
+	エラーメッセージの表示について
+　１：<html xmlns:th="http://www.thymeleaf.org">でタイムリーフを使っているか
+　２：th:object="${UserDTO}"でuserDTOに格納することを宣言する
+　３：name="*{name}"タイムリーフではこう記述すること
+　４：th:errors="*{name}"でエラーが発生しているかを見ている
+	
+-->
+
+<form th:action = "@{/insert-click}" th:object="${UserDTO}" method="post">
+	
+	<h2>新規会員登録</h2>
+	<div class="error"><p th:text ="${insertError}"></p></div>
+	
+	<table align="center" border=1>
+		
+			
+		<tr>
+			<th>名前：</th>
+			<td><input type="text" th:field="*{name}" ></td>
+		</tr>
+		<tr>
+			<th>名前（フリガナ）：</th>
+			<td><input type="text" th:field="*{kana}" required></td>
+		</tr>
+		<tr>
+			<th>誕生日：</th>
+			<td><input type="date" th:field="*{birthDate}" required></td>
+		</tr>	
+		<tr>
+			<th>Eメール：</th>
+			<td><input type="email" th:field="*{email}" required></td>
+		</tr>
+		<tr>
+			<th>パスワード：</th>
+			<td><input type="password" th:field="*{password}" required></td>
+		</tr>
+		<tr>
+			<td><input type="submit" value="登録"></td>
+		</tr>	
+	</table>	
+	
+<!--	エラーメッセージ-->
+<ul>
+	<li><div class="error" th:errors="*{name}"></div></li>
+	<li><div class="error" th:errors="*{kana}" ></div></li>
+	<li><div class="error" th:errors="*{email}" ></div></li>
+	<li><div class="error" th:errors="*{password}" ></div></li>
+	<li><div class="error" th:errors="*{birthDate}" ></div></li>
+</ul>	
+</form>		
+</body>
+</html>

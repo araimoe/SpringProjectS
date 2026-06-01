@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<div style="text-align:center;">
+	
+		<h2>以下の情報を更新しました！</h2><br>
+		
+	<form th:action="@{/memberList}" th:Object="${UpdateDTO}" method="post">
+	
+		<p th:text = "*{name}"></p>
+		<p th:text = "*{kana}"></p>
+		<p th:text = "*{gender}"></p>
+		<p th:text = "*{birthday}"></p>
+		<p th:text = "*{email}"></p>
+		<p th:text = "*{password}"></p>
+		<p th:text = "*{phoneNumber}"></p>
+		<p th:text = "*{postalCode}"></p>
+		<p th:text = "*{address}"></p>
+		
+		
+		<input type="submit" value="会員情報一覧に戻る">
+	</form>
+	</div>
+</body>
+</html>

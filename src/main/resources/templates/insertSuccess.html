@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+
+	<h2>以下の情報を登録できました！！</h2>
+	
+	名前：<p th:text ="${UserDTO.name}"></p>
+	名前（フリガナ）：<p th:text = "${UserDTO.kana}"></p>
+	Eメール：<p th:text = "${UserDTO.email}"></p>
+	パスワード：<p th:text = "${UserDTO.password}"></p>
+	誕生日：<p th:text = "${UserDTO.birthDate}"></p>
+	
+	
+	<form action="login" method="get">
+		
+		<input type="submit" value="ログイン画面に戻る">
+		
+	</form>		
+</body>
+</html>

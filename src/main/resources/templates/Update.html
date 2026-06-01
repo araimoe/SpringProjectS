@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/error.css}" >
+</head>
+<body>
+
+	<form th:action="@{/updateSuccess}" th:Object="${MemberDTO}" method="post">
+		
+<!--		userId受取部分-->
+		<input type="hidden" th:field="*{userId}">
+		
+		<table align="center" border="1">
+			
+			<tr>
+				<th>氏名</th>
+			    <td><input type="text" th:field="*{name}"></td>
+			</tr>
+			<tr>
+				<th>氏名(フリガナ)</th>
+				<td><input type="text" th:field="*{kana}"></td>
+			</tr>
+			<tr>	
+				<th>性別</th>
+				<td><input type="text" th:field="*{gender}"></td>
+			</tr>
+			<tr>	
+				<th>誕生日</th>
+				<td><input type="date" th:field="*{birthday}"></td>
+			</tr>
+			<tr>	
+				<th>メールアドレス</th>
+				<td><input type="text" th:field="*{email}"></td>
+			</tr>
+			<tr>	
+				<th>パスワード</th>
+				<td><input type="text" th:field="*{password}"></td>
+			</tr>
+			<tr>	
+				<th>電話番号</th>
+				<td><input type="text" th:field="*{phoneNumber}"></td>
+			</tr>
+			<tr>	
+				<th>郵便番号</th>
+				<td><input type="text" th:field="*{postalCode}"></td>
+			</tr>
+			<tr>	
+				<th>住所</th>
+				<td><input type="text" th:field="*{address}"></td>
+			</tr>						
+		</table>	
+		<!--	エラーメッセージ-->
+		<ul>
+			<li><div class="error" th:errors="*{name}"></div></li>
+			<li><div class="error" th:errors="*{kana}" ></div></li>
+			<li><div class="error" th:errors="*{gender}" ></div></li>
+			<li><div class="error" th:errors="*{birthday}" ></div></li>
+			<li><div class="error" th:errors="*{email}" ></div></li>
+			<li><div class="error" th:errors="*{password}" ></div></li>
+			<li><div class="error" th:errors="*{phoneNumber}" ></div></li>
+			<li><div class="error" th:errors="*{postalCode}" ></div></li>
+			<li><div class="error" th:errors="*{address}" ></div></li>
+			
+		</ul>	
+		<input type="submit" value="更新">	
+	</form>	
+</body>
+</html>

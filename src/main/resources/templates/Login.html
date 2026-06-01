@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/error.css}" >
+</head>
+<body>
+<form th:action="@{/login-review}" th:object="${LoginDTO}" method="post">
+	
+	<div class="error" ><p th:text ="${loginError}"></p></div>
+	
+	<table align="center" border="1">
+	<tr>
+		<th>Eメール</th>
+		<td><input type="email"  th:field="*{email}"></td>
+		
+	<tr>
+		<th>パスワード</th>
+		<td><input type="password"  th:field="*{password}"></td>
+	</tr>
+	</tr>
+	
+	
+	<tr>
+	<td><input type="submit" value="送信"></td>
+</form>	
+
+<form th:action ="@{/insert}" method="post">
+	
+	<td><input type="submit" value="登録画面へ"></td>
+	</tr>
+	</table>
+	
+	<div class="error" th:errors="*{email}"></div>
+	<div class="error" th:errors="*{password}"></div>
+</form>	
+
+
+	
+</body>
+</html>

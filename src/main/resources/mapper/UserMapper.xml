@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--ここでマッパーを接続させる-->
+<mapper namespace="com.example.demo.mapper.UserMapper">
+
+<!--
+「id」はmapperとの繋がり入れるためのもの
+「resultTypeType」は検索された結果を送るためのもの
+
+-->
+<select id = "login" parameterType= "com.example.demo.dto.UserDTO" resultType = "com.example.demo.dto.UserDTO">
+
+	SELECT
+    		user_id AS userId,
+    		name 
+	from
+    		m_users 
+	where
+    		email = #{email}   <!--#{入力値}のこと -->
+    		AND password = #{password};
+    
+</select>
+
+<insert id = "insert" parameterType= "com.example.demo.dto.UserDTO">
+
+	INSERT 
+	INTO m_users(name, kana, email, password, birthday_date) 
+	VALUES ( 
+    		#{name},
+    		#{kana},
+    		#{email},
+    		#{password},
+    		#{birthDate});
+
+</insert>
+
+</mapper>
