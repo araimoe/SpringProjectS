@@ -20,8 +20,9 @@ class MemberListServiseTest {
 //	void メンバーリスト取得() {
 //		
 //		List<MemberDTO> list = null;
+//		int offset = 0;
 //		
-//		list = memberServise.listget();
+//		list = memberServise.listget(offset);
 //		
 //		System.out.println(list);
 //		assertNotNull(list);
@@ -72,13 +73,17 @@ class MemberListServiseTest {
 	void 曖昧検索() {
 		
 		MemberDTO dto = new MemberDTO();
-		dto.setName("");
-		dto.setGender("女性");
-		dto.setAddress("神奈川");
+		dto.setName("石");
+		dto.setGender("");
+		dto.setEmail("");
+		dto.setAddress("");
+		
+		dto.setOffset(10);;
 		
 		List<MemberDTO> list = memberServise.serchMember(dto);
 		
 		System.out.println(list);
+		//assertFalse(list.isEmpty());
 		assertNotNull(list);
 	}
 }

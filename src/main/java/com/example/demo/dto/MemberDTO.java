@@ -17,4 +17,7 @@ public class MemberDTO {
 	private String postalCode;
 	private String address;
 	private LocalDate  birthday;
+	
+	//ページング
+	private Integer offset;
 }

@@ -11,7 +11,7 @@ import com.example.demo.dto.UpdateDTO;
 public interface MemberMapper {
 
 	//会員情報一覧を表示
-	List<MemberDTO> findAll();
+	List<MemberDTO> findAll(Integer offset);
 	
 	//曖昧検索
 	List<MemberDTO> serchMember(MemberDTO serchdto);

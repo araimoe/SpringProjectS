@@ -23,7 +23,10 @@ FROM
     t_users 
 ORDER BY
     user_id
-    
+LIMIT
+    10 <!--10件づつ表示  -->
+OFFSET
+    #{offset} <!--ページ数の管理-->
 </select>
 
 <!--曖昧検索機能-->
@@ -44,9 +47,15 @@ FROM
     t_users
 
 <where>
+
 <!--この条件が true なら、そのSQLを出力する -->
 <if test="name != null and name != ''">
-    AND name LIKE '%' || #{name} || '%'
+ <!--()で囲む事でより細かな条件を付け加えることができる -->
+    AND (
+        name LIKE '%' || #{name} || '%'
+         <!--名前検索でカタカナでも適用させる（kana=nameみたいなイメージ） -->
+        OR kana LIKE '%' || #{name} || '%'
+        )
 </if>
 <if test="gender != null and gender != ''">
     AND gender LIKE '%' || #{gender} || '%'
@@ -54,7 +63,18 @@ FROM
 <if test="address != null and address != ''">
     AND address LIKE '%' || #{address} || '%'
 </if>
+<if test = "email !=null and email != ''">
+    AND email LIKE '%' || #{email} || '%'
+</if>
+
 </where>
+
+ORDER BY
+    user_id
+LIMIT
+    10 <!--10件づつ表示  -->
+OFFSET
+    #{offset} <!--ページ数の管理-->
 
 </select>
 

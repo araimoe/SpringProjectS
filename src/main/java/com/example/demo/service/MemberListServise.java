@@ -16,11 +16,11 @@ public class MemberListServise {
 	MemberMapper memberMapper;
 	
 	//全件メンバーリスト検索
-	public List<MemberDTO> listget() {
+	public List<MemberDTO> listget(int offset) {
 		
 		List<MemberDTO> memberlist = null;
 		
-		memberlist = memberMapper.findAll();
+		memberlist = memberMapper.findAll(offset);
 		
 		return memberlist;
 	}
