@@ -41,6 +41,7 @@ public class LoginController {
 			 
 			 //HTML側でUserDTOを使っているためエラー防止で入れる
 			 model.addAttribute("LoginDTO",form);
+			 
 			 return "Login";
 		 }
 		 

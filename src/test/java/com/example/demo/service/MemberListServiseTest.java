@@ -16,17 +16,7 @@ class MemberListServiseTest {
 	@Autowired
 	MemberListServise memberServise;
 	
-//	@Test
-//	void メンバーリスト取得() {
-//		
-//		List<MemberDTO> list = null;
-//		
-//		list = memberServise.listget();
-//		
-//		System.out.println(list);
-//		assertNotNull(list);
-//	}
-//	
+
 //	@Test
 //	void IDから一件取得() {
 //		
@@ -73,12 +63,16 @@ class MemberListServiseTest {
 		
 		MemberDTO dto = new MemberDTO();
 		dto.setName("");
-		dto.setGender("女性");
-		dto.setAddress("神奈川");
+		dto.setGender("");
+		dto.setEmail("");
+		dto.setAddress("");
+		
+		dto.setOffset(10);;
 		
 		List<MemberDTO> list = memberServise.serchMember(dto);
 		
 		System.out.println(list);
+		//assertFalse(list.isEmpty());
 		assertNotNull(list);
 	}
 }

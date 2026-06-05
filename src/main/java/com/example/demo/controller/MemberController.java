@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,26 +23,30 @@ public class MemberController {
 	@Autowired
 	MemberListServise memberService;
 	
-	@PostMapping("/memberList")
-	public String memberList(Model model) {
-		
-		List<MemberDTO> memberlist = null;
-		
-		memberlist = memberService.listget();
-		model.addAttribute("memberlist", memberlist);
-		model.addAttribute("MemberDTO",new MemberDTO());
-		
-		return "MemberList";
-		
-		
-	}
+	/*ページングの処理について
+	 * ・@RequestParam(defaultValue = "1")は初期表示を出す際に使う。
+	 * 　初期表示ではまだページ数がないためデフォルト値を入れる
+	 * ・int pageにはユーザーがクリックしたページ番号が入るため変化していくため入力値となる
+	 * ・int offset = (page - 1) * 10;で先に表示をした件数をスキップをする件数を取得する
+	 */
 	
-	@PostMapping("/selectMember")
-	public String selectMember(@ModelAttribute MemberDTO form,Model model) {
+//	検索機能・一覧画面表示
+	@GetMapping("/selectMember")
+	public String selectMember(@ModelAttribute MemberDTO form,@RequestParam(defaultValue = "1") int page,Model model) {
+		
+		int offset = (page - 1) * 10;
+		
+		form.setOffset(offset);
 		
 		List<MemberDTO> memberList = memberService.serchMember(form);
 		
-		model.addAttribute("MemberDTO",new MemberDTO());
+		if(memberList.isEmpty()) {
+			
+			model.addAttribute("MemberDTO",form);
+			model.addAttribute("serchError","該当するものが見つかりませんでした。");
+		}
+		
+		model.addAttribute("MemberDTO",form);
 		model.addAttribute("memberList",memberList);
 		
 		return "MemberList";

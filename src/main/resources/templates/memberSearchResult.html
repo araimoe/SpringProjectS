@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet" th:href="@{/css/error.css}" >
+</head>
+<body>
+	<div style="text-align:center;">
+			<h2>会員情報一覧</h2><br>
+			
+			<form th:action="@{/selectMember}" th:Object="${MemberDTO}" method="get">
+				<p>詳細検索</p>
+				名前：<input type="text" neme="name" th:field="*{name}">
+				性別：<input type="text" neme="gender" th:field="*{gender}">
+				Eメール：<input type="text" neme="email" th:field="*{email}">
+				住所：<input type="text" neme="address" th:field="*{address}">
+			
+				<input type="submit" value="検索">
+				
+				<p class="error" th:text="${serchError}"></p>
+			</form>	
+			
+	<table border="1">
+			<tr>
+				<th>氏名</th>
+				<th>氏名（フリガナ）</th>
+				<th>	性別</th>	
+				<th>誕生日</th>
+				<th>Eメール</th>
+				<th>	パスワード</th>
+				<th>電話番号</th>
+				<th>郵便番号</th>
+				<th>住所</th>
+			</tr>
+			<tr th:each = "serchList : ${memberList}">
+							
+							<td th:text = "${serchList.name}"></td>
+							<td th:text = "${serchList.kana}"></td>
+							<td th:text = "${serchList.gender}"></td>
+							<td th:text = "${serchList.birthday}"></td>
+							<td th:text = "${serchList.email}"></td>
+							<td th:text = "${serchList.password}"></td>
+							<td th:text = "${serchList.phoneNumber}"></td>
+							<td th:text = "${serchList.postalCode}"></td>
+							<td th:text = "${serchList.address}"></td>
+							
+							<form th:action="@{/update}" method="post">
+								<td>
+									<input type="hidden" name = "userId" th:value="${serchList.userId}">
+									<input type="submit" value="更新"></td>
+							</form>		
+							
+							<form th:action="@{/delete}" method="post">
+								<td>
+									<input type="hidden" name = "userId" th:value="${serchList.userId}">
+									<input type="submit" value="削除"></td>
+							</form>
+							
+							
+							
+						</tr>
+	</table>
+						<a th:href="@{/selectMember(page=1)}">1</a>　
+						<a th:href="@{/selectMember(page=2)}">2</a>　
+						<a th:href="@{/selectMember(page=3)}">3</a>　
+						<a th:href="@{/selectMember(page=4)}">4</a>
+						</div>
+
+</body>
+</html>
