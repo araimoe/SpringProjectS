@@ -77,7 +77,7 @@ FROM
 
 <!--"name".equals(sort)で同じ名前のものが入っているか確認される-->
 <when test='"kana".equals(sort)'>
-    ORDER BY kana
+    ORDER BY name
 </when>
 <when test='"birthday".equals(sort)'>
     ORDER BY birthday
