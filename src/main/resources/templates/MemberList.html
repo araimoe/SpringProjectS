@@ -9,13 +9,26 @@
 	<div style="text-align:center;">
 		<h2>会員情報一覧</h2><br>
 		
-		<form th:action="@{/selectMember}" th:Object="${MemberDTO}" method="get">
+		<form th:action="@{/selectMember}" th:object="${MemberDTO}" method="get">
 			<p>詳細検索</p>
-			名前：<input type="text" neme="name" th:field="*{name}">
-			性別：<input type="text" neme="gender" th:field="*{gender}">
-			Eメール：<input type="text" neme="email" th:field="*{email}">
-			住所：<input type="text" neme="address" th:field="*{address}">
+			名前：<input type="text" th:field="*{name}">
+			性別：<input type="text" th:field="*{gender}">
+			Eメール：<input type="text" th:field="*{email}">
+			住所：<input type="text" th:field="*{address}">
 		
+<!--			ソート機能-->
+			<select th:field="*{sort}">
+				    <option value="">選択してください</option>
+					<option value="kana">名前</option>
+					<option value="birthday">誕生日</option>
+				</select>
+				
+				<select th:field="*{order}">
+					<option value="">選択してください</option>
+				    <option value="desc">降順</option>
+					<option value="asc">昇順</option>
+				</select>
+			
 			<input type="submit" value="検索">
 			
 			<p class="error" th:text="${serchError}"></p>
@@ -23,8 +36,7 @@
 		
 		<p th:text="${deleteSuccess}"></p>
 		<p class="error" th:text ="${deleteError}"></p>
-		
-		
+			
 	<table border="1">
 		<tr>
 			<th>氏名</th>
@@ -38,7 +50,7 @@
 			<th>住所</th>
 		</tr>
 		
-		<tr th:each = "list : ${memberlist}">
+		<tr th:each = "list : ${memberList}">
 			
 			<td th:text = "${list.name}"></td>
 			<td th:text = "${list.kana}"></td>
@@ -68,10 +80,46 @@
 	
 	</table>
 <!--	この部分で「int page」に値を返している-->
-	<a th:href="@{/memberList(page=1)}">1</a>　
-	<a th:href="@{/memberList(page=2)}">2</a>　
-	<a th:href="@{/memberList(page=3)}">3</a>　
-	<a th:href="@{/memberList(page=4)}">4</a>
+<!--検索した値を保持、「MemberDTO.」で呼び出し-->
+	<a th:href="@{/selectMember(
+		page=1,
+		    name=${MemberDTO.name},
+		    gender=${MemberDTO.gender},
+		    email=${MemberDTO.email},
+		    address=${MemberDTO.address},
+			sort=${MemberDTO.sort},
+			order=${MemberDTO.order}
+		)}">1</a>　
+		
+	<a th:href="@{/selectMember(
+		page=2,
+		    name=${MemberDTO.name},
+		    gender=${MemberDTO.gender},
+		    email=${MemberDTO.email},
+		    address=${MemberDTO.address},
+			sort=${MemberDTO.sort},
+			order=${MemberDTO.order}
+			)}">2</a>　
+			
+	<a th:href="@{/selectMember(
+		page=3,
+		    name=${MemberDTO.name},
+		    gender=${MemberDTO.gender},
+		    email=${MemberDTO.email},
+		    address=${MemberDTO.address},
+			sort=${MemberDTO.sort},
+			order=${MemberDTO.order}
+	)}">3</a>　
+	
+	<a th:href="@{/selectMember(
+		page=4,
+		    name=${MemberDTO.name},
+		    gender=${MemberDTO.gender},
+		    email=${MemberDTO.email},
+		    address=${MemberDTO.address},
+			sort=${MemberDTO.sort},
+			order=${MemberDTO.order}
+	)}">4</a>
 </div>
 </body>
 </html>

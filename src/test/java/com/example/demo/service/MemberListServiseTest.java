@@ -16,18 +16,7 @@ class MemberListServiseTest {
 	@Autowired
 	MemberListServise memberServise;
 	
-//	@Test
-//	void メンバーリスト取得() {
-//		
-//		List<MemberDTO> list = null;
-//		int offset = 0;
-//		
-//		list = memberServise.listget(offset);
-//		
-//		System.out.println(list);
-//		assertNotNull(list);
-//	}
-//	
+
 //	@Test
 //	void IDから一件取得() {
 //		
@@ -73,7 +62,7 @@ class MemberListServiseTest {
 	void 曖昧検索() {
 		
 		MemberDTO dto = new MemberDTO();
-		dto.setName("石");
+		dto.setName("");
 		dto.setGender("");
 		dto.setEmail("");
 		dto.setAddress("");

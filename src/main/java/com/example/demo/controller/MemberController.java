@@ -30,22 +30,7 @@ public class MemberController {
 	 * ・int offset = (page - 1) * 10;で先に表示をした件数をスキップをする件数を取得する
 	 */
 	
-	@GetMapping("/memberList")
-	public String memberList(@RequestParam(defaultValue = "1") int page,Model model) {
-		
-		int offset = (page - 1) * 10;
-		
-		List<MemberDTO> memberlist = null;
-		
-		memberlist = memberService.listget(offset);
-		model.addAttribute("memberlist", memberlist);
-		model.addAttribute("MemberDTO",new MemberDTO());
-		
-		return "MemberList";
-		
-		
-	}
-	
+//	検索機能・一覧画面表示
 	@GetMapping("/selectMember")
 	public String selectMember(@ModelAttribute MemberDTO form,@RequestParam(defaultValue = "1") int page,Model model) {
 		
@@ -57,14 +42,14 @@ public class MemberController {
 		
 		if(memberList.isEmpty()) {
 			
-			model.addAttribute("MemberDTO",new MemberDTO());
+			model.addAttribute("MemberDTO",form);
 			model.addAttribute("serchError","該当するものが見つかりませんでした。");
 		}
 		
-		model.addAttribute("MemberDTO",new MemberDTO());
+		model.addAttribute("MemberDTO",form);
 		model.addAttribute("memberList",memberList);
 		
-		return "memberSearchResult";
+		return "MemberList";
 	}
 	
 	@PostMapping("/update")

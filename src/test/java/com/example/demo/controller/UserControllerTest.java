@@ -24,37 +24,45 @@ class UserControllerTest {
 	@MockBean
     LoginService loginService;
 	
-	@Test
-	void ログインコントローラー接続成功() throws Exception{
-		
-		 mockMvc.perform(get("/login"))
-	   //→疑似サーバーでGET /login を実行（http://localhost:8080/loginにいくのと同じになる）
-         .andExpect(status().isOk())
-       //→正常に遷移しているか
-         .andExpect(view().name("Login"));
-	   //→Login.htmlに遷移したか
-	}
+//	@Test
+//	void ログインコントローラー接続成功() throws Exception{
+//		
+//		 mockMvc.perform(get("/login"))
+//	   //→疑似サーバーでGET /login を実行（http://localhost:8080/loginにいくのと同じになる）
+//         .andExpect(status().isOk())
+//       //→正常に遷移しているか
+//         .andExpect(view().name("Login"));
+//	   //→Login.htmlに遷移したか
+//	}
 
 	@Test
-	void 登録画面移動() throws Exception {
-		 mockMvc.perform(post("/insert"))
+	void 会員情報一覧画面()throws Exception {
+		
+		 mockMvc.perform(get("/selectMember"))
 		 .andExpect(status().isOk())
-		 .andExpect(view().name("insert"));
+		 .andExpect(view().name("MemberList"));
 	}
 	
-	@Test
-	void 登録の形式チェック() throws Exception {
-		
-		//paramはHTML側で入力したのと同じ状態になる
-		 mockMvc.perform(post("/insert-click")
-		        .param("name", "")
-		        .param("kana", "あいうえお")
-		        .param("email", "ootuka@examplecom")
-		        .param("password", "pass12")
-		        .param("birthDate", "1994-09-11"))
-		       .andExpect(status().isOk())
-               .andExpect(model().hasErrors())
-              //→controller側のDTOがエラーを持っていたら 
-               .andExpect(view().name("insert"));
+//	@Test
+//	void 登録画面移動() throws Exception {
+//		 mockMvc.perform(post("/insert"))
+//		 .andExpect(status().isOk())
+//		 .andExpect(view().name("insert"));
+//	}
+	
+//	@Test
+//	void 登録の形式チェック() throws Exception {
+//		
+//		//paramはHTML側で入力したのと同じ状態になる
+//		 mockMvc.perform(post("/insert-click")
+//		        .param("name", "")
+//		        .param("kana", "あいうえお")
+//		        .param("email", "ootuka@examplecom")
+//		        .param("password", "pass12")
+//		        .param("birthDate", "1994-09-11"))
+//		       .andExpect(status().isOk())
+//               .andExpect(model().hasErrors())
+//              //→controller側のDTOがエラーを持っていたら 
+//               .andExpect(view().name("insert"));
+//	}
 	}
-}

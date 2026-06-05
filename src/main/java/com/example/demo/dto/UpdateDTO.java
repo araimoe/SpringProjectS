@@ -10,6 +10,8 @@ import jakarta.validation.constraints.Size;
 
 import lombok.Data;
 
+//更新を行う際にバリテーション・更新実行を行うDTO
+
 @Data
 public class UpdateDTO {
 

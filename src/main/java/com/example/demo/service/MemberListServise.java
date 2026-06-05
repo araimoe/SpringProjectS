@@ -15,17 +15,7 @@ public class MemberListServise {
 	@Autowired
 	MemberMapper memberMapper;
 	
-	//全件メンバーリスト検索
-	public List<MemberDTO> listget(int offset) {
-		
-		List<MemberDTO> memberlist = null;
-		
-		memberlist = memberMapper.findAll(offset);
-		
-		return memberlist;
-	}
-	
-	//曖昧検索
+	//曖昧検索・一覧表示
 	public List<MemberDTO>  serchMember(MemberDTO dto){
 		
 		List<MemberDTO> serchlist = memberMapper.serchMember(dto);

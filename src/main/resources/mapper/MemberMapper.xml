@@ -6,28 +6,28 @@
 <mapper namespace="com.example.demo.mapper.MemberMapper">
 
 <!--全件取得-->
-<select id="findAll" resultType="com.example.demo.dto.MemberDTO">
+<!--<select id="findAll" resultType="com.example.demo.dto.MemberDTO">-->
 
-SELECT
-    user_id AS userId, 
-    name, 
-    kana, 
-    gender, 
-    birthday, 
-    email, 
-    password, 
-    phone_number AS phoneNumber, 
-    postal_code AS postalCode, 
-    address 
-FROM
-    t_users 
-ORDER BY
-    user_id
-LIMIT
-    10 <!--10件づつ表示  -->
-OFFSET
-    #{offset} <!--ページ数の管理-->
-</select>
+<!--SELECT-->
+<!--    user_id AS userId, -->
+<!--    name, -->
+<!--    kana, -->
+<!--    gender, -->
+<!--    birthday, -->
+<!--    email, -->
+<!--    password, -->
+<!--    phone_number AS phoneNumber, -->
+<!--    postal_code AS postalCode, -->
+<!--    address -->
+<!--FROM-->
+<!--    t_users -->
+<!--ORDER BY-->
+<!--    user_id-->
+<!--LIMIT-->
+<!--    10 10件づつ表示  -->
+<!--OFFSET-->
+<!--    #{offset} ページ数の管理-->
+<!--</select>-->
 
 <!--曖昧検索機能-->
 <select id="serchMember" parameterType="com.example.demo.dto.MemberDTO" resultType="com.example.demo.dto.MemberDTO">
@@ -69,8 +69,36 @@ FROM
 
 </where>
 
-ORDER BY
-    user_id
+<!-- 
+<choose>で囲むことでswitch文と同じ作用ができる/複数書くことでより細かな条件を付け加えられる
+<when>はelse if文と同じ作用となり、選ばなければ作用しない状態になる
+ -->
+<choose>
+
+<!--"name".equals(sort)で同じ名前のものが入っているか確認される-->
+<when test='"kana".equals(sort)'>
+    ORDER BY kana
+</when>
+<when test='"birthday".equals(sort)'>
+    ORDER BY birthday
+</when>
+<otherwise>
+    ORDER BY user_id
+</otherwise>
+
+</choose>
+
+<choose>
+
+<when test='"desc".equals(order)'>
+    DESC
+</when>
+<otherwise>
+    ASC
+</otherwise>
+
+</choose>
+
 LIMIT
     10 <!--10件づつ表示  -->
 OFFSET
