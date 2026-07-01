@@ -11,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -42,15 +41,10 @@ public class JsonController {
 
 	@PostMapping("/memberListJson")
 	@ResponseBody
-	public List<MemberDTO> selectMembers(@RequestParam(defaultValue = "1") int page, @RequestBody MemberDTO dto) {
+	public List<MemberDTO> selectMembers(@RequestBody MemberDTO dto) {
 
-		//jsから送られてくるのはIntegerで返ってくるため、ここでint型に代入しなおす
-		if (dto.getPage() != null && dto.getPage() != 0) {
-
-			page = dto.getPage();
-		}
-
-		int offset = (page - 1) * 10;
+		//jsでページ数(デフォルト値も)を代入できているので呼び出す事ができる
+		int offset = (dto.getPage() - 1) * 10;
 
 		dto.setOffset(offset);
 		List<MemberDTO> list = memberService.serchMember(dto);
