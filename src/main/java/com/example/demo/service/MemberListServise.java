@@ -91,7 +91,7 @@ public class MemberListServise {
 		int result = 0;
 
 		result = userMapper.insertJson(insert);
-		
+
 		if (result == 0) {
 
 			throw new InsertException("登録に失敗しました。");

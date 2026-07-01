@@ -15,34 +15,32 @@ public class LoginService {
 
 	//mapperを使う場合は【@Autowired】を使うこと
 	@Autowired
-    private UserMapper userMapper;
-	
+	private UserMapper userMapper;
+
 	@Autowired
 	private LoginMapper loginMapper;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	public UserDTO login(LoginDTO logindto) {
-		
+
 		//UserDTOに結果を入れる
 		UserDTO dto = loginMapper.login(logindto);
-		
-		if(dto == null) {
+
+		if (dto == null) {
 			throw new LoginException("ログインできませんでした。もう一度確認の上、ログインをしてください。");
 		}
-		
+
 		return dto;
 	}
-	
+
 	public int insert(UserDTO dto) {
-		
+
 		//登録する前にパスワードをハッシュ化させる
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 		int result = userMapper.insert(dto);
-		
-		
-		
+
 		return result;
 	}
 }
