@@ -6,23 +6,7 @@
 <!--ここでマッパーを接続させる-->
 <mapper namespace="com.example.demo.mapper.UserMapper">
 
-<!--
-「id」はmapperとの繋がり入れるためのもの
-「resultTypeType」は検索された結果を送るためのもの
 
--->
-<select id = "login" parameterType= "com.example.demo.dto.UserDTO" resultType = "com.example.demo.dto.UserDTO">
-
-	SELECT
-    		user_id AS userId,
-    		name 
-	from
-    		m_users 
-	where
-    		email = #{email}   <!--#{入力値}のこと -->
-    		AND password = #{password};
-    
-</select>
 
 <insert id = "insert" parameterType= "com.example.demo.dto.UserDTO">
 
@@ -34,6 +18,37 @@
     		#{email},
     		#{password},
     		#{birthDate});
+
+</insert>
+
+<insert id="insertJson"  parameterType= "com.example.demo.dto.InsertDTO">
+
+INSERT 
+INTO t_users( 
+    name, 
+    kana, 
+    gender, 
+    birthday, 
+    email, 
+    password, 
+    phone_number, 
+    postal_code, 
+    address, 
+    hobby_id
+) 
+VALUES ( 
+    #{name}, 
+    #{kana}, 
+    #{gender}, 
+    #{birthday}, 
+    #{email}, 
+    #{password}, 
+    #{phoneNumber}, 
+    #{postalCode}, 
+    #{address}, 
+    #{hobby}
+)
+
 
 </insert>
 

@@ -53,9 +53,9 @@ public class MemberController {
 	}
 	
 	@PostMapping("/update")
-	public String updateSelect(@RequestParam String userId, Model model) {
+	public String updateSelect(@ModelAttribute MemberDTO form, Model model) {
 		
-		MemberDTO member = memberService.memberList(userId);
+		MemberDTO member = memberService.memberList(form);
 		
 		if(member != null) {
 			
@@ -65,50 +65,40 @@ public class MemberController {
 		}
 		
 		model.addAttribute("userIdError","データの取得に失敗しました。");
-		return "MemberList";
+		return "redirect:/selectMember";
 	}
 	
 	@PostMapping("/updateSuccess")
 	public String updateMember(@Valid @ModelAttribute UpdateDTO form,BindingResult result, Model model) {
 		
-		int i = 0;
+	
 		 
 		 //ここでDTOで設定したバリテーションが発生すれば動く仕組み
 		 if(result.hasErrors()) {
 			 
-			 //HTML側でUserDTOを使っているためエラー防止で入れる
+			 
 			 model.addAttribute("UpdateDTO",form);
+			 model.addAttribute("MemberDTO",new MemberDTO());
 			 return "Update";
 		 }
 		 
-		i = memberService.memberUpdate(form);
-		
-		if( i != 0) {
-			
+		int updateFlag = memberService.memberUpdate(form);
+
 			model.addAttribute("UpdateDTO",form);
 			return "UpdateSuccess";
-		}
-		
-		model.addAttribute("UpdateError","更新に失敗しました");
-		return "Update";
+
 	}
 
 	//redirect:でコントローラへ遷移する
 	@PostMapping("/delete")
-	public String deleteMember(@RequestParam String userId,Model model) {
+	public String deleteMember(@ModelAttribute MemberDTO form,Model model) {
 		
-		int i = 0;
+		int result = memberService.memberDelete(form);
 		
-		i = memberService.memberDelete(userId);
-		
-		if(i != 0) {
 			
 			model.addAttribute("deleteSuccess","正常に削除されました");
-			return "redirect:/memberList";
-		}
-		
-		model.addAttribute("deleteError","削除に失敗しました");
-		return "redirect:/memberList";
+			return "redirect:/selectMember";
+	
 	}
 	
 }

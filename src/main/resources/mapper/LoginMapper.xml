@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.example.demo.mapper.LoginMapper">
+  
+  <!--
+「id」はmapperとの繋がり入れるためのもの
+「resultTypeType」は検索された結果を送るためのもの
+
+-->
+<select id = "login" parameterType= "com.example.demo.dto.LoginDTO" resultType = "com.example.demo.dto.UserDTO">
+
+	SELECT
+    		user_id AS userId,
+    		name 
+	FROM
+    		m_users 
+	WHERE
+    		email = #{email}   <!--#{入力値}のこと -->
+    		AND password = #{password};
+    
+</select>
+
+
+<!--Spring Security用-->
+<select id="securityLogin" resultType = "com.example.demo.dto.LoginDTO">
+
+    SELECT
+    		user_id AS userId,
+    		name,
+    		email,
+    		password 
+	FROM
+    		m_users 
+	WHERE
+    		email = #{email}  
+
+</select>
+  
+  </mapper>

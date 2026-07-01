@@ -16,7 +16,7 @@
 			Eメール：<input type="text" th:field="*{email}">
 			住所：<input type="text" th:field="*{address}">
 		
-<!--			ソート機能-->
+<!--	ソート機能 この中でソートする文言を選んでcontroller側に渡している-->
 			<select th:field="*{sort}">
 				    <option value="">選択してください</option>
 					<option value="kana">名前</option>
@@ -29,6 +29,16 @@
 					<option value="asc">昇順</option>
 				</select>
 			
+			<br>
+			<p>趣味検索</p>
+			<select th:field="*{hobbyName}">
+					<option value="">選択してください</option>
+				    <option value="読書">読書</option>
+					<option value="ゲーム">ゲーム</option>
+					<option value="ランニング">ランニング</option>
+					<option value="食べ歩き">食べ歩き</option>
+			</select>
+				
 			<input type="submit" value="検索">
 			
 			<p class="error" th:text="${serchError}"></p>
@@ -48,6 +58,9 @@
 			<th>電話番号</th>
 			<th>郵便番号</th>
 			<th>住所</th>
+			<th>趣味</th>
+			<th>更新ボタン</th>
+			<th>削除ボタン</th>
 		</tr>
 		
 		<tr th:each = "list : ${memberList}">
@@ -61,6 +74,7 @@
 			<td th:text = "${list.phoneNumber}"></td>
 			<td th:text = "${list.postalCode}"></td>
 			<td th:text = "${list.address}"></td>
+			<td th:text = "${list.hobbyName}"></td>
 			
 			<form th:action="@{/update}" method="post">
 				<td>
@@ -80,7 +94,20 @@
 	
 	</table>
 <!--	この部分で「int page」に値を返している-->
-<!--検索した値を保持、「MemberDTO.」で呼び出し-->
+<!--検索した値を保持、「MemberDTO.」に検索結果を収納させて画面が切り替わっても保持される
+
+◇保持の流れ
+検索実行
+	↓
+MemberDTOに検索条件が入る
+	↓
+タイムリーフがURLを作成する
+	↓
+?page=2&name=田中...とURLに表示される
+	↓
+検索ボタンが押されるとController が再度受け取り、またMemberDTOに再度入れ込む
+
+-->
 	<a th:href="@{/selectMember(
 		page=1,
 		    name=${MemberDTO.name},
@@ -120,6 +147,15 @@
 			sort=${MemberDTO.sort},
 			order=${MemberDTO.order}
 	)}">4</a>
+	
+	<br>
+	<form th:action="@{/csv}" method="get">
+		
+<!--		ページの番号受取用-->
+		<input type="hidden" name="page" th:value="${param.page}">
+		<input type="submit" value="CSV出力">
+		
+	</form>		
 </div>
 </body>
 </html>

@@ -6,65 +6,74 @@
 <mapper namespace="com.example.demo.mapper.MemberMapper">
 
 <!--全件取得-->
-<!--<select id="findAll" resultType="com.example.demo.dto.MemberDTO">-->
+<select id="findAll" resultType="com.example.demo.dto.MemberDTO">
 
-<!--SELECT-->
-<!--    user_id AS userId, -->
-<!--    name, -->
-<!--    kana, -->
-<!--    gender, -->
-<!--    birthday, -->
-<!--    email, -->
-<!--    password, -->
-<!--    phone_number AS phoneNumber, -->
-<!--    postal_code AS postalCode, -->
-<!--    address -->
-<!--FROM-->
-<!--    t_users -->
-<!--ORDER BY-->
-<!--    user_id-->
-<!--LIMIT-->
-<!--    10 10件づつ表示  -->
-<!--OFFSET-->
-<!--    #{offset} ページ数の管理-->
-<!--</select>-->
+SELECT
+    user_id AS userId, 
+    name, 
+    kana, 
+    gender, 
+    birthday, 
+    email, 
+    password, 
+    phone_number AS phoneNumber, 
+    postal_code AS postalCode, 
+    address 
+FROM
+    t_users 
+ORDER BY
+    user_id
+
+</select>
 
 <!--曖昧検索機能-->
 <select id="serchMember" parameterType="com.example.demo.dto.MemberDTO" resultType="com.example.demo.dto.MemberDTO">
 
 SELECT
-    user_id AS userId,
-    name,
-    kana,
-    gender,
-    birthday,
-    email,
-    password,
-    phone_number AS phoneNumber,
-    postal_code AS postalCode,
-    address 
+    u.user_id AS userId,
+    u.name,
+    u.kana,
+    u.gender,
+    u.birthday,
+    u.email,
+    u.password,
+    u.phone_number AS phoneNumber,
+    u.postal_code AS postalCode,
+    u.address,
+    h.hobby_name AS hobbyName 
 FROM
-    t_users
+    t_users u
+LEFT JOIN
+    t_hobby h
+ON
+    u.hobby_id = h.hobby_id
 
 <where>
+
+<!--削除フラグが0の場合に表示-->
+    u.delete_flag = 0
 
 <!--この条件が true なら、そのSQLを出力する -->
 <if test="name != null and name != ''">
  <!--()で囲む事でより細かな条件を付け加えることができる -->
     AND (
-        name LIKE '%' || #{name} || '%'
+        u.name LIKE '%' || #{name} || '%'
          <!--名前検索でカタカナでも適用させる（kana=nameみたいなイメージ） -->
-        OR kana LIKE '%' || #{name} || '%'
+        OR u.kana LIKE '%' || #{name} || '%'
         )
 </if>
 <if test="gender != null and gender != ''">
-    AND gender LIKE '%' || #{gender} || '%'
+    AND u.gender LIKE '%' || #{gender} || '%'
 </if>
 <if test="address != null and address != ''">
-    AND address LIKE '%' || #{address} || '%'
+    AND u.address LIKE '%' || #{address} || '%'
 </if>
 <if test = "email !=null and email != ''">
-    AND email LIKE '%' || #{email} || '%'
+    AND u.email LIKE '%' || #{email} || '%'
+</if>
+
+<if test="hobbyName != null and hobbyName != ''">
+    AND h.hobby_name = #{hobbyName}
 </if>
 
 </where>
@@ -75,15 +84,16 @@ FROM
  -->
 <choose>
 
-<!--"name".equals(sort)で同じ名前のものが入っているか確認される-->
+<!--"kana".equals(sort)で同じ名前のものが入っているか確認される-->
 <when test='"kana".equals(sort)'>
-    ORDER BY name
+    ORDER BY u.kana
 </when>
 <when test='"birthday".equals(sort)'>
-    ORDER BY birthday
+    ORDER BY u.birthday
 </when>
+<!--otherwiseは条件が発生しなければ自動で実行される  -->
 <otherwise>
-    ORDER BY user_id
+    ORDER BY u.user_id
 </otherwise>
 
 </choose>
@@ -119,7 +129,8 @@ SELECT
     password, 
     phone_number AS phoneNumber, 
     postal_code AS postalCode, 
-    address 
+    address,
+    hobby_id AS hobby
 FROM
     t_users
 WHERE
@@ -140,22 +151,25 @@ SET
     gender = #{gender}, 
     phone_number = #{phoneNumber}, 
     postal_code = #{postalCode}, 
-    address = #{address}, 
+    address = #{address},
+    hobby_id = #{hobby},
     updated_at = CURRENT_TIMESTAMP 
 WHERE
     user_id = #{userId}
 
 </update>
 
-<!--削除機能-->
-<delete id="deleteMember">
+<!--論理削除機能-->
+<update id="deleteMember">
 
-DELETE 
-FROM 
+UPDATE 
     t_users
+SET
+    delete_flag = 1,
+    updated_at = CURRENT_TIMESTAMP
 WHERE
     user_id = #{userId}
 
-</delete>
+</update>
 
 </mapper>

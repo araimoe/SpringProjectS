@@ -10,6 +10,10 @@ import lombok.Data;
 @Data
 public class LoginDTO {
 
+	private String userId;
+	
+	private String name;
+	
 	@NotBlank(message = "Eメールを入力してください" )
 	@Email(message="メールの形式が不正です。")
 	private String email;

@@ -15,6 +15,11 @@ import com.example.demo.dto.LoginDTO;
 import com.example.demo.dto.UserDTO;
 import com.example.demo.service.LoginService;
 
+/*
+ * 【Spring Security】の流れ
+ * ※ログインcontroller側は遷移のみを実装させる（そのため@GetMapping）
+ * HTMLでは「method = "post"」になっているがログイン認証は【Spring Security】が行う
+ */
 
 @Controller
 public class LoginController {
@@ -23,12 +28,16 @@ public class LoginController {
     LoginService loginService;
 	
 	 @GetMapping("/login")
-	    public String login(Model model) {
+	    public String login() {
 
-		 model.addAttribute("LoginDTO", new LoginDTO());
-		 
 	        return "Login";
 	    }
+	 
+	 @GetMapping("/")
+	 public String memu() {
+		 
+		 return "result";
+	 }
 	 
 	 //@RequestParamは【request.setAttribute】と同じ働きをしている
 	 
@@ -73,5 +82,10 @@ public class LoginController {
 		 
 	 }
 	 
+	 @GetMapping("/jsonTest")
+	 public String jsonTest() {
+		 
+		 return "JsonTest";
+	 }
 	
 }

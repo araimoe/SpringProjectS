@@ -10,7 +10,7 @@
 	
 		<h2>以下の情報を更新しました！</h2><br>
 		
-	<form th:action="@{/memberList}" th:Object="${UpdateDTO}" method="post">
+	<form th:action="@{/selectMember}" th:Object="${UpdateDTO}" method="get">
 	
 		<p th:text = "*{name}"></p>
 		<p th:text = "*{kana}"></p>
@@ -21,6 +21,7 @@
 		<p th:text = "*{phoneNumber}"></p>
 		<p th:text = "*{postalCode}"></p>
 		<p th:text = "*{address}"></p>
+		<p th:text = "*{hobby}"></p>
 		
 		
 		<input type="submit" value="会員情報一覧に戻る">

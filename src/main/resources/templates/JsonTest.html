@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>JSON方式テスト画面</title>
+</head>
+<body>
+
+	<h2>JSON方式のテスト画面</h2>
+	
+	<input type="text" id="name">
+
+<!--	Javascriptのsend()メソッドを実行させる-->
+	<button onclick="send()">送信</button>
+
+	
+	<br>
+	
+	<button onclick="member()">JSON方式会員情報一覧画面へ</button>
+	
+	<br>
+	
+	<button onclick="insertChange()">JSON方式会員情報登録画面へ</button>
+	
+	<script>
+
+	function send() {
+
+		//データを渡すcontrollerを提示する
+	    fetch("/executeJsonTest", {
+
+	        method: "GET",
+
+	        headers: {
+	            "Content-Type": "application/json"
+	        },
+
+			//HTMLで指定したidによってJavascriptと紐づけている
+			//ここに入力値が入る
+	        body: JSON.stringify({
+	            name: document.getElementById("name").value
+	        })
+
+	    })
+		//↓controller側の戻り値をjson化
+	    .then(response => response.json())
+		
+		//ここでcontroller側で指定した戻り値が入り、処理を行う（ループ処理や）
+	    .then(data => {
+
+			//戻り値の中身を確認
+	        alert(data.message);
+
+	    });
+
+	}
+
+//画面遷移のみ
+	function member(){
+		
+		location.href = "/change";
+
+	}
+	function insertChange(){
+		
+		location.href = "/insertChange"
+	}
+	</script>
+</body>
+</html>
