@@ -75,19 +75,19 @@ public class JsonController {
 
 	@PostMapping("/updateSuccessJson")
 	@ResponseBody
-	public Map<String,Object> updateSuccessJson(@Valid @RequestBody UpdateDTO update, BindingResult error) {
+	public Map<String, Object> updateSuccessJson(@Valid @RequestBody UpdateDTO update, BindingResult error) {
 
-		Map<String,Object> response = new HashMap<>();
+		Map<String, Object> response = new HashMap<>();
 
 		if (error.hasErrors()) {
 
-			Map<String,String> errorsMap = new HashMap<>();
-			
+			Map<String, String> errorsMap = new HashMap<>();
+
 			for (FieldError fieldError : error.getFieldErrors()) {
-				
+
 				errorsMap.put(fieldError.getField(), fieldError.getDefaultMessage());
 			}
-			
+
 			response.put("result", -1);
 			response.put("errors", errorsMap);
 			return response;
@@ -95,7 +95,7 @@ public class JsonController {
 
 		int result = memberService.memberUpdate(update);
 
-		response.put("result",result );
+		response.put("result", result);
 		return response;
 	}
 
@@ -116,9 +116,10 @@ public class JsonController {
 	 * ※serviceとmapperは変えず、返ってきた数字ごとにエラー表示の分岐を行う
 	 * ・返す値はエラーメッセージと項目名が合わさったMapと異常系かを判別させる数字のみ
 	 */
-	
+
 	@PostMapping("/insertSuccessJson")
 	public Map<String, Object> insertSuccessJson(@Valid @RequestBody InsertDTO insert, BindingResult error) {
+
 		//メッセージと分岐条件を受け取る際にまとめておくための箱
 		Map<String, Object> response = new HashMap<>();
 
