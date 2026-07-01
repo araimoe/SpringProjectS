@@ -2,6 +2,8 @@ package com.example.demo.dto;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 //検索・画面一覧表示・ソート機能・ページングを行うDTO
@@ -18,10 +20,18 @@ public class MemberDTO {
 	private String phoneNumber;
 	private String postalCode;
 	private String address;
-	private LocalDate  birthday;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private LocalDate birthday;
+	
+	private Integer hobby;
+	private String hobbyName;
 	
 	//ページング管理
 	private int offset;
+	
+	//JSON用のページ数を管理
+	private Integer page;
 	
 	//ソート機能管理
 	private String sort;

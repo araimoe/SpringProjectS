@@ -11,7 +11,7 @@ import com.example.demo.dto.UpdateDTO;
 public interface MemberMapper {
 //
 //	//会員情報一覧を表示
-//	List<MemberDTO> findAll(Integer offset);
+	List<MemberDTO> findAll();
 //	
 	
 	//曖昧検索
@@ -21,12 +21,12 @@ public interface MemberMapper {
 //	List<MemberDTO> selectMember(MemberDTO dto);
 	
 	//更新画面に移動
-	MemberDTO memberList(String userId);
+	MemberDTO memberList(MemberDTO updateUser);
 	
 	//更新実行
 	int updateMember(UpdateDTO updateDto);
 
-	//削除実行
-	int deleteMember(String userId);
+	//論理削除実行
+	int deleteMember(MemberDTO deleteUser);
 	
 }

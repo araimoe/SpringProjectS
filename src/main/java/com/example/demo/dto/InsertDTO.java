@@ -10,13 +10,9 @@ import jakarta.validation.constraints.Size;
 
 import lombok.Data;
 
-//更新を行う際にバリテーション・更新実行を行うDTO
-
 @Data
-public class UpdateDTO {
+public class InsertDTO {
 
-	private String userId;
-	
 	@NotBlank(message = "名前を入力してください" )
 	@Pattern(regexp = "^[ぁ-んァ-ヶ一-龥々ー　]+$", message = "形式が不正です。全角で入力してください。")
 	private String name;

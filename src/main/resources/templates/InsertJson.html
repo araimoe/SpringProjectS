@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	
+	<!-- CSRFトークン SpringSecurityで認可させるために必要   -->
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	
+	<title>会員情報登録画面</title>
+</head>
+
+<body>
+	<div style="text-align:center;">
+
+		<h2>会員情報登録</h2>
+
+		<table border="1" align="center">
+
+			<tr>
+				<th>氏名</th>
+				<td>
+					<input type="text" id="name">
+				</td>
+				<td><span id="nameError"></span>
+				</td>
+			</tr>
+			<th>氏名(フリガナ)</th>
+			<td>
+				<input type="text" id="kana">
+			</td>
+			<td><span id="kanaError"></span>
+			</td>
+			</tr>
+			<tr>
+				<th>性別</th>
+				<td><select id="gender">
+						<option value="">性別を選択してください</option>
+						<option value="男性">男性</option>
+						<option value="女性">女性</option>
+					</select></td>
+				<td><span id="genderError"></span>
+				</td>
+			<tr>
+				<th>誕生日</th>
+				<td>
+					<input type="date" id="birthday">
+				</td>
+				<td><span id="birthdayError"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>メールアドレス</th>
+				<td>
+					<input type="text" id="email">
+				</td>
+				<td><span id="emailError"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>パスワード</th>
+				<td>
+					<input type="text" id="password">
+				</td>
+				<td><span id="passwordError"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>電話番号</th>
+				<td>
+					<input type="text" id="phoneNumber">
+				</td>
+				<td><span id="phoneError"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>郵便番号</th>
+				<td>
+					<input type="text" id="postalCode">
+				</td>
+				<td><span id="postalError"></span>
+				</td>
+			</tr>
+			<tr>
+				<th>住所</th>
+				<td>
+					<input type="text" id="address">
+				</td>
+				<td><span id="addressError"></span>
+				</td>
+			</tr>
+			<th>趣味</th>
+			<td><select id="hobby">
+					<option value="">趣味を選択してください</option>
+					<option value="1">読書</option>
+					<option value="2">ゲーム</option>
+					<option value="3">ランニング</option>
+					<option value="4">食べ歩き</option>
+				</select></td>
+			<td><span id="hobbyError"></span>
+			</td>
+		</table>
+		<button onclick="insertSuccessJson()">登録</button>
+	</div>
+
+	<script>
+		
+		//js側にも認可をさせるためにHTMLから値を受け取る
+		const token = document.querySelector('meta[name="_csrf"]').content;
+		const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+		function insertList() {
+
+			return {
+
+				name: document.getElementById("name").value,
+				kana: document.getElementById("kana").value,
+				gender: document.getElementById("gender").value,
+				birthday: document.getElementById("birthday").value,
+				email: document.getElementById("email").value,
+				password: document.getElementById("password").value,
+				phoneNumber: document.getElementById("phoneNumber").value,
+				postalCode: document.getElementById("postalCode").value,
+				address: document.getElementById("address").value,
+				hobby: document.getElementById("hobby").value
+			}
+
+
+		}
+
+		function insertSuccessJson() {
+
+			const insertDto = insertList();
+
+			fetch("/insertSuccessJson", {
+
+				method: "POST",
+
+				headers: {
+					[header]: token,
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(insertDto)
+
+			})
+
+				.then(response => response.json())
+
+
+				//dataに戻り値を入れている
+				.then(data => {
+
+					console.log(data);
+
+					if (data.result === -1) {
+
+						alert("入力エラー");
+
+						console.log(data.errors);
+
+						//エラーメッセージをHTMLと紐づけ　errors（エラーメッセージをまとめたもの）
+						document.getElementById("nameError").textContent =
+							data.errors.name || "";
+						document.getElementById("kanaError").textContent =
+							data.errors.kana || "";
+						document.getElementById("genderError").textContent =
+							data.errors.gender || "";
+						document.getElementById("birthdayError").textContent =
+							data.errors.birthday || "";
+						document.getElementById("emailError").textContent =
+							data.errors.email || "";
+						document.getElementById("passwordError").textContent =
+							data.errors.password || "";
+						document.getElementById("phoneError").textContent =
+							data.errors.phoneNumber || "";
+						document.getElementById("postalError").textContent =
+							data.errors.postalCode || "";
+						document.getElementById("addressError").textContent =
+							data.errors.address || "";
+						document.getElementById("hobbyError").textContent =
+							data.errors.hobby || "";
+
+
+						return;
+					}
+
+					alert("登録成功");
+					location.href = "/resultChange"
+				});
+		}
+
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	
+	<!-- CSRFトークン SpringSecurityで認可させるために必要   -->
+	<meta name="_csrf" th:content="${_csrf.token}">
+	<meta name="_csrf_header" th:content="${_csrf.headerName}">
+	
+	<title>JSON式Update画面</title>
+</head>
+
+<body>
+	<div style="text-align:center;">
+		<h2>JSON方式　Update画面</h2>
+
+		<table border="1" align="center">
+
+			<tr>
+				<th>氏名</th>
+				<td><input type="text" id="name"></td>
+				<td><span id="nameError"></span>
+			</tr>
+			<tr>
+				<th>氏名(フリガナ)</th>
+				<td><input type="text" id="kana"></td>
+				<td><span id="kanaError"></span>
+			</tr>
+			<tr>
+				<th>性別</th>
+				<td> <select id="gender">
+						<option value="">選択してください</option>
+						<option value="男性">男性</option>
+						<option value="女性">女性</option>
+					</select></td>
+				<td><span id="genderError"></span>
+			</tr>
+			<tr>
+				<th>誕生日</th>
+				<td><input type="date" id="birthday"></td>
+				<td><span id="birthdayError"></span>
+			</tr>
+			<tr>
+				<th>メールアドレス</th>
+				<td><input type="text" id="email"></td>
+				<td><span id="emailError"></span>
+			</tr>
+			<tr>
+				<th>パスワード</th>
+				<td><input type="text" id="password"></td>
+				<td><span id="passwordError"></span>
+			</tr>
+			<tr>
+				<th>電話番号</th>
+				<td><input type="text" id="phoneNumber"></td>
+				<td><span id="phoneError"></span>
+			</tr>
+			<tr>
+				<th>郵便番号</th>
+				<td><input type="text" id="postalCode"></td>
+				<td><span id="postalError"></span>
+			</tr>
+			<tr>
+				<th>住所</th>
+				<td><input type="text" id="address"></td>
+				<td><span id="addressError"></span>
+			</tr>
+			<tr>
+				<th>趣味</th>
+				<td> <select id="hobby">
+						<option value="">選択してください</option>
+						<option value="1">読書</option>
+						<option value="2">ゲーム</option>
+						<option value="3">ランニング</option>
+						<option value="4">食べ歩き</option>
+					</select></td>
+				<td><span id="hobbyError"></span>
+			</tr>
+			<!--※今回は入力値を紐づけてから出力しているため画面更新は無くて良い					-->
+			<!--	<tbody id="updateList">-->
+
+
+			<!--	</tbody>-->
+
+		</table>
+
+		<button onclick="updateSuccessJson()">更新実行</button>
+	</div>
+	<script>
+		
+		//js側にも認可をさせるためにHTMLから値を受け取る
+		const token = document.querySelector('meta[name="_csrf"]').content;
+		const header = document.querySelector('meta[name="_csrf_header"]').content;
+
+		window.onload = function () {
+
+			//前の一覧画面からuserIdを取り出す。
+			//new URLSearchParams は ?userId=U001 のような文字列を解析してくれる便利なクラス。			
+			const params = new URLSearchParams(location.search);
+
+			//↑ここで一覧画面から送られてきたデータを取得することができる
+			const userId = params.get("userId");
+
+			fetch("/updateJson", {
+
+				method: "POST",
+
+				headers: {
+					[header]: token,
+					"Content-Type": "application/json"
+				},
+				//{ userId: userId}にすることでcontroller側のDTOに入力値を詰められる
+				//userIdのみだとString userIdしか受け取れなくなる
+				body: JSON.stringify({userId: userId})
+
+			})
+
+				.then(response => response.json())
+
+
+				//dataに戻り値を入れている
+				.then(data => {
+
+
+					//HTML側で入れたidで紐づけさせる
+					document.getElementById("name").value = data.name;
+					document.getElementById("kana").value = data.kana;
+					document.getElementById("gender").value = data.gender;
+					document.getElementById("birthday").value = data.birthday;
+					document.getElementById("email").value = data.email;
+					document.getElementById("password").value = data.password;
+					document.getElementById("phoneNumber").value = data.phoneNumber;
+					document.getElementById("postalCode").value = data.postalCode;
+					document.getElementById("address").value = data.address;
+					document.getElementById("hobby").value = data.hobby;
+
+
+					//画面更新が実行される
+					//document.getElementById("updateList").innerHTML = html;
+				});
+
+		}
+
+		function updateList() {
+
+			return {
+
+				name: document.getElementById("name").value,
+				kana: document.getElementById("kana").value,
+				gender: document.getElementById("gender").value,
+				birthday: document.getElementById("birthday").value,
+				email: document.getElementById("email").value,
+				password: document.getElementById("password").value,
+				phoneNumber: document.getElementById("phoneNumber").value,
+				postalCode: document.getElementById("postalCode").value,
+				address: document.getElementById("address").value,
+				hobby: document.getElementById("hobby").value
+			}
+		}
+
+		function updateSuccessJson() {
+
+			const params = new URLSearchParams(location.search);
+			const userId = params.get("userId");
+
+
+			const updateDto = updateList();
+			updateDto.userId = userId;
+
+			console.log(updateDto);
+
+			fetch("/updateSuccessJson", {
+
+				method: "POST",
+
+				headers: {
+					[header]: token,
+					"Content-Type": "application/json"
+				},
+				body: JSON.stringify(updateDto)
+
+			})
+
+				.then(response => response.json())
+
+
+				//dataに戻り値を入れている
+				.then(data => {
+
+
+					if (data.result === -1) {
+
+						//エラーメッセージをHTMLと紐づけ　errors（エラーメッセージをまとめたもの）
+						document.getElementById("nameError").textContent =
+							data.errors.name || "";
+						document.getElementById("kanaError").textContent =
+							data.errors.kana || "";
+						document.getElementById("genderError").textContent =
+							data.errors.gender || "";
+						document.getElementById("birthdayError").textContent =
+							data.errors.birthday || "";
+						document.getElementById("emailError").textContent =
+							data.errors.email || "";
+						document.getElementById("passwordError").textContent =
+							data.errors.password || "";
+						document.getElementById("phoneError").textContent =
+							data.errors.phoneNumber || "";
+						document.getElementById("postalError").textContent =
+							data.errors.postalCode || "";
+						document.getElementById("addressError").textContent =
+							data.errors.address || "";
+						document.getElementById("hobbyError").textContent =
+							data.errors.hobby || "";
+
+						alert("入力エラー");
+						return;
+					}
+
+					alert("更新成功！　一覧画面に戻ります");
+					location.href = "/change"
+				});
+		}
+	</script>
+</body>
+
+</html>
