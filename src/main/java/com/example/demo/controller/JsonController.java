@@ -126,7 +126,7 @@ public class JsonController {
 			//error.getFieldErrors：エラーが起きたプロパティ名（例：name・kana・birthdayなど）
 			for (FieldError fieldError : error.getFieldErrors()) {
 
-				//error.getDefaultMessage()：DTOで指定したメッセージが入る
+				//fieldError.getDefaultMessage()：DTOで指定したメッセージが入る
 				//エラーを入れる箱にデータを入れ込む
 				errors.put(fieldError.getField(), fieldError.getDefaultMessage());
 			}

@@ -2,7 +2,6 @@ package com.example.demo.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.dto.InsertDTO;
@@ -18,11 +17,21 @@ import com.example.demo.mapper.UserMapper;
 @Service
 public class MemberListServise {
 
-	@Autowired
-	MemberMapper memberMapper;
+//	@Autowired
+//	MemberMapper memberMapper;
+//
+//	@Autowired
+//	private UserMapper userMapper;
+	
+	private final MemberMapper memberMapper;
+	private final UserMapper userMapper;
 
-	@Autowired
-	private UserMapper userMapper;
+	// ① コンストラクタインジェクションに変更
+	public MemberListServise(MemberMapper memberMapper, UserMapper userMapper) {
+		this.memberMapper = memberMapper;
+		this.userMapper = userMapper;
+	}
+
 
 	//曖昧検索・一覧表示
 	public List<MemberDTO> serchMember(MemberDTO dto) {

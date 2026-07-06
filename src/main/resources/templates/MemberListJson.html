@@ -82,7 +82,7 @@
 	
 		//「window.onload = function()」で画面に入った瞬間に実行
 		window.onload = function () {
-
+			
 			fetch("/memberListJson", {
 
 				method: "POST",
@@ -94,7 +94,8 @@
 				},
 
 				//空のデータを受け取っている状態（controller側に「@RequestBody MemberDTO dto」も入力値があるため）
-				body: JSON.stringify({})
+				//ページの初期値はここで入れ込む
+				body: JSON.stringify({page:currentPage})
 
 			})
 

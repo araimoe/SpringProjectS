@@ -1,108 +1,70 @@
 package com.example.demo.service;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.example.demo.dto.MemberDTO;
+import com.example.demo.mapper.MemberMapper;
+import com.example.demo.mapper.UserMapper;
 
-@SpringBootTest
+/*
+ * Springの単体テスト
+ * 
+ * @ExtendWith(MockitoExtension.class)
+ * ➡@Mock・@@InjectMocks を使うための宣言
+ * 
+ * @Mock　➡　偽物（モック）のオブジェクトを作成する
+ * 
+ * @@InjectMocks　➡　テスト対象のServiceを生成し、@Mockを自動で注入する
+ * 
+ * ※　Mockは空っぽのため、自分で戻り値や入力値を設定してあげる必要があり、
+ * 　　whenを使ってMockに求める動作を設定する
+ */
+
+@ExtendWith(MockitoExtension.class)
 class MemberListServiseTest {
 
-	@Autowired
-	MemberListServise memberServise;
-	
+	@Mock
+	private MemberMapper memberMapper;
 
+	@Mock
+	private UserMapper userMapper;
+
+	@InjectMocks
+	private MemberListServise memberListServise;
+	
 	@Test
-	void IDから一件取得() {
+	void 単体テスト実行() {
 		
-		MemberDTO member = new MemberDTO();
+		//入力値を入れる箱
+		MemberDTO searchCondition = new MemberDTO();
 		
-		member.setUserId("U001");
+		//検索結果を入れる箱
+		MemberDTO member1 = new MemberDTO();
 		
-		MemberDTO dto = memberServise.memberList(member);
+		//検索結果はリストに入れる
+		List<MemberDTO> mockList = List.of(member1);
 		
-		System.out.println(dto);
-		assertNotNull(dto);
+		//Mapperが呼ばれたときに検索結果の箱に返すように設定する（モックの動作を設定する）
+		when(memberMapper.serchMember(searchCondition)).thenReturn(mockList);
+		
+		//テスト対象となっているserviceを実行させる
+		List<MemberDTO> result = memberListServise.serchMember(searchCondition);
+		
+		//検索結果から値が返ってきているか
+		assertThat(result).hasSize(1);
+		
+		//Mapperのメソッドが呼ばれているか確認
+		verify(memberMapper).serchMember(searchCondition);
+		
 	}
 
-//	@Test
-//	void 会員情報更新() {
-//		
-//		UpdateDTO update = new UpdateDTO();
-//		
-//		update.setUserId("U015");
-//		update.setName("青木翔太");
-//		update.setKana("アオキショウタ");
-//		update.setGender("男性");
-//		update.setBirthday(LocalDate.of(1992, 4, 12));
-//		update.setEmail("aoki.shota@example.com");
-//		update.setPassword("shota1234");
-//		update.setPhoneNumber("09011112222");
-//		update.setPostalCode("0600001");
-//		update.setAddress("北海道札幌市中央区北一条西1-1");
-//		
-//		int i = 0;
-//		
-//		i = memberServise.memberUpdate(update);
-//		
-//		if(i != 0) {
-//			
-//			System.out.println("更新成功！");
-//			
-//		}else {
-//			
-//			System.out.println("更新失敗…");
-//		}
-// 	}
-	
-//	@Test
-//	void 会員情報登録() {
-//		
-//		InsertDTO insert = new InsertDTO();
-//		
-//		insert.setName("藤原愛");
-//		insert.setKana("フジワラアイ");
-//		insert.setGender("女性");
-//		insert.setBirthday(LocalDate.of(1990, 11, 11));
-//		insert.setEmail("fujiwara@example.com");
-//		insert.setPassword("pass1234");
-//		insert.setPhoneNumber("09011110019");
-//		insert.setPostalCode("7300001");
-//		insert.setAddress("広島県広島市中区基町1-1");
-//		insert.setHobby(3);
-//		
-//		int i = 0;
-//		
-//		i = memberServise.insertJson(insert);
-//		
-//		if(i != 0) {
-//			
-//			System.out.println("登録成功！");
-//			
-//		}else {
-//			
-//			System.out.println("登録失敗…");
-//		}
-//	}
-	
-//	@Test
-//	void 曖昧検索() {
-//		
-//		MemberDTO dto = new MemberDTO();
-//		dto.setName("");
-//		dto.setGender("");
-//		dto.setEmail("");
-//		dto.setAddress("");
-//		
-//		dto.setOffset(10);;
-//		
-//		List<MemberDTO> list = memberServise.serchMember(dto);
-//		
-//		System.out.println(list);
-//		//assertFalse(list.isEmpty());
-//		assertNotNull(list);
-//	}
 }
