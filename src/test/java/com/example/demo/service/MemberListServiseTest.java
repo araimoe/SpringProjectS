@@ -11,7 +11,9 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import com.example.demo.dto.InsertDTO;
 import com.example.demo.dto.MemberDTO;
+import com.example.demo.exception.InsertException;
 import com.example.demo.mapper.MemberMapper;
 import com.example.demo.mapper.UserMapper;
 
@@ -54,6 +56,7 @@ class MemberListServiseTest {
 		List<MemberDTO> mockList = List.of(member1);
 		
 		//Mapperが呼ばれたときに検索結果の箱に返すように設定する（モックの動作を設定する）
+	    //(mockList)は期待値をいれるイメージ
 		when(memberMapper.serchMember(searchCondition)).thenReturn(mockList);
 		
 		//テスト対象となっているserviceを実行させる
@@ -66,5 +69,37 @@ class MemberListServiseTest {
 		verify(memberMapper).serchMember(searchCondition);
 		
 	}
+	
+	@Test
+	void 登録単体テスト() {
+		
+		InsertDTO insert = new InsertDTO();
+		
+		when(userMapper.insertJson(insert)).thenReturn(1);
+		
+		int result = memberListServise.insertJson(insert);
+		
+		assertThat(result).isEqualTo(1);
+		verify(userMapper).insertJson(insert);
+	}
 
+	@Test
+	void 登録失敗して例外を返す() {
+		
+		InsertDTO insert = new InsertDTO();
+		
+		when(userMapper.insertJson(insert)).thenReturn(0);
+	
+		//どの処理で例外が発生するか
+	    assertThatThrownBy(() -> memberListServise.insertJson(insert))
+	    
+	    //どんな例外が発生するか
+        .isInstanceOf(InsertException.class)
+        
+        //その例外のエラーメッセージは合っているか
+        .hasMessage("登録に失敗しました。");
+
+	    verify(userMapper).insertJson(insert);
+	}
+			
 }

@@ -192,6 +192,8 @@
 					if (data.result === -1) {
 
 						//エラーメッセージをHTMLと紐づけ　errors（エラーメッセージをまとめたもの）
+						//data.errors.(name,kana.gender～など) にDTOで設定したエラーメッセージが入っている
+						//エラーが無ければ空文字を出力し、以前出ていたエラーメッセージを消すイメージ
 						document.getElementById("nameError").textContent =
 							data.errors.name || "";
 						document.getElementById("kanaError").textContent =

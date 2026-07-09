@@ -68,6 +68,13 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 
+<!--テスト内ではSpringSecurityが実行されなくする宣言-->
+	<dependency>
+    		<groupId>org.springframework.security</groupId>
+    		<artifactId>spring-security-test</artifactId>
+    		<scope>test</scope>
+	</dependency>	
+
 	</dependencies>
 
 	<build>

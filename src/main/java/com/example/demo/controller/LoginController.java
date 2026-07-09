@@ -33,6 +33,7 @@ public class LoginController {
 	        return "Login";
 	    }
 	 
+	 //SpringSecurityで認証された後の初期画面のためURLはデフォルトとする
 	 @GetMapping("/")
 	 public String memu() {
 		 
